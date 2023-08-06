@@ -6,6 +6,7 @@ import (
 
 	"github.com/cocoaster/golang-jwt/controllers/authcontroller"
 	productcontroller "github.com/cocoaster/golang-jwt/controllers/productController"
+	"github.com/cocoaster/golang-jwt/middlewares"
 	"github.com/cocoaster/golang-jwt/models"
 	"github.com/gorilla/mux"
 )
@@ -22,7 +23,7 @@ func main()  {
 	
 	api := r.PathPrefix("/api").Subrouter()
 	api.HandleFunc("/product", productcontroller.GetAllProduct).Methods("GET")
-
+	api.Use(middlewares.JWTMiddleware)
 
 	log.Println(":8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
