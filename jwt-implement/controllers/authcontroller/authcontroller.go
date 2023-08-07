@@ -29,16 +29,6 @@ func isValidEmail(email string) bool {
 	return match
 }
 
-func getJson(input models.User,w http.ResponseWriter, r *http.Request)models.User{
-	var response map[string]string
-	decoder := json.NewDecoder(r.Body)
-	if err := decoder.Decode(&input);err != nil{
-		response = map[string]string{"message": "Decode json failed!"}
-		helper.ResponseJSON(w, http.StatusBadRequest, response)
-		return models.User{}
-	}
-	return input
-}
 
 func checkingEmail(payload models.User, w http.ResponseWriter)int{
 	if payload.Email == ""{
@@ -60,9 +50,11 @@ func Register(w http.ResponseWriter, r *http.Request){
 	var userInput models.User
 	var response map[string]string
 
-	payload := getJson(userInput, w ,r)
+	//type assertion with go, 
+	//because return is interface{} we should intepretation return that return is model.User 
+	payload := helper.GetJson(userInput, w ,r).(*models.User)
 	//checking json input
-	checkEmail := checkingEmail(payload, w)
+	checkEmail := checkingEmail(*payload, w)
 	if checkEmail != 200{
 		return
 	}
@@ -112,9 +104,9 @@ func Login(w http.ResponseWriter, r *http.Request){
 		log.Fatal("Error loading .Env file")
 	}
 	JWT_KEY := []byte(os.Getenv("JWT_KEY"))
-	payload := getJson(userInput, w, r)
+	payload := helper.GetJson(&userInput, w, r).(*models.User)
 
-	checkEmail := checkingEmail(payload, w)
+	checkEmail := checkingEmail(*payload, w)
 	if checkEmail != 200{
 		return
 	}

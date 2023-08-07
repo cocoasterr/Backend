@@ -1,3 +1,4 @@
 .vsocode
 .env
 bin/app
+__debug_bin/

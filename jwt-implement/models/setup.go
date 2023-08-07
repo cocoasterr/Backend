@@ -21,7 +21,7 @@ func ConnectDB(){
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(&User{})
+	db.AutoMigrate(&User{},&Product{})
 	DB = db
 	log.Println("migration success!")
 }
