@@ -24,8 +24,8 @@ func ormGeneralResponse(c *gin.Context, data []map[string]interface{}, page int,
 }
 
 func OrmGetAllData(c *gin.Context, tableName string) {
-	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
-	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	page,_ := strconv.Atoi(c.Request.Header.Get("page"))
+	limit,_ := strconv.Atoi(c.Request.Header.Get("limit"))
 	offset := (page - 1) * limit
 
 	var total int64

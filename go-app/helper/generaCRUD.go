@@ -27,13 +27,14 @@ func generalResponse(c *gin.Context, data []interface{},info ...int){
 func GetAllData(c *gin.Context, tableName string) {
 	page,_ := strconv.Atoi(c.Request.Header.Get("page"))
 	limit,_ := strconv.Atoi(c.Request.Header.Get("limit"))
-	query := fmt.Sprintf("SELECT * FROM %s limit %d offset %d", tableName, limit, page)
+	offset := (page - 1) * limit
+
+	query := fmt.Sprintf("SELECT * FROM %s limit %d offset %d", tableName, limit, offset)
 	rows, err := models.DB.Query(query)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to get data"})
 		return
 	}
-
 	var total int
 	query_total := fmt.Sprintf("SELECT COUNT(id) from %s", tableName)
 	err = models.DB.QueryRow(query_total).Scan(&total)
@@ -41,6 +42,7 @@ func GetAllData(c *gin.Context, tableName string) {
 		c.JSON(500, gin.H{"error": "Failed to get data"})
 		return
     }
+	
 	defer rows.Close()
 	data := []interface{}{}
 	columnNames, _ := rows.Columns()
@@ -56,13 +58,14 @@ func GetAllData(c *gin.Context, tableName string) {
 			return
 		}
 
-		// itemMap := make(map[string]interface{})
-		// for i, colName := range columnNames {
-		// 	itemMap[colName] = *(dest[i].(*interface{}))
-		// }
+		itemMap := make(map[string]interface{})
+		for i, colName := range columnNames {
+			itemMap[colName] = *(dest[i].(*interface{}))
+		}
 
-		data = append(data, dest)
+		data = append(data, itemMap)
 	}
+
 	generalResponse(c, data, page, total)
 }
 // func GetAllData(c *gin.Context, tableName string) {

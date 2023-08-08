@@ -1,6 +1,10 @@
 package orm
 
 import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -8,7 +12,10 @@ import (
 var DB *gorm.DB
 func ConnectDB(){
 	var err error
-	dsn := "postgresql://postgres:password@172.21.255.76:5439/go_app?sslmode=disable"
+	if err = godotenv.Load(); err != nil{
+		log.Fatal(err.Error())
+	}
+	dsn := os.Getenv("DB_DSN")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	DB = db
 	if err != nil {

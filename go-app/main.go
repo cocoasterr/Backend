@@ -13,20 +13,17 @@ import (
 
 
 func main() {
-	// var err error
 	db := models.ConnectDB()
-    // if err != nil {
-		// 	log.Fatal("Error connecting to database: ", err)
-		// }
-    defer db.Close()
+
+	defer db.Close()
 	
 	router := gin.Default()
 	orm.ConnectDB()
 
 
 	
-	router.GET("/create10k", func(c *gin.Context) {
-		totalLoops := 10000
+	router.POST("/create100k", func(c *gin.Context) {
+		totalLoops := 40000
 
 		for i := 0; i < totalLoops; i++ {
 			query := "INSERT INTO products (name, quantity) VALUES ('selimut', 300)"
