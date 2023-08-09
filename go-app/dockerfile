@@ -1,19 +1,13 @@
 FROM golang:1.20.7-alpine3.17
 
-# Menentukan working directory di dalam kontainer
 WORKDIR /app
 
-# Menyalin file go.mod dan go.sum ke working directory
 COPY go.mod go.sum ./
 
-# Menjalankan perintah go mod download untuk mendownload dependencies
 RUN go mod download
 
-# Menyalin seluruh file dari direktori aplikasi ke working directory di kontainer
 COPY . .
 
-# Mengkompilasi aplikasi Go
 RUN	go build -o bin/app
 
-# Menjalankan aplikasi saat kontainer berjalan
 CMD ["./bin/app"]
