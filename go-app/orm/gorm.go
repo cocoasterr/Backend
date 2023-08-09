@@ -10,7 +10,7 @@ import (
 )
 
 var DB *gorm.DB
-func ConnectDB(){
+func ConnectDB()(){
 	var err error
 	if err = godotenv.Load(); err != nil{
 		log.Fatal(err.Error())

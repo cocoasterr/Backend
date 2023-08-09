@@ -29,7 +29,7 @@ func GetAllData(c *gin.Context, tableName string) {
 	limit,_ := strconv.Atoi(c.Request.Header.Get("limit"))
 	offset := (page - 1) * limit
 
-	query := fmt.Sprintf("SELECT * FROM %s limit %d offset %d", tableName, limit, offset)
+	query := fmt.Sprintf("SELECT id, name FROM %s limit %d offset %d", tableName, limit, offset)
 	rows, err := models.DB.Query(query)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to get data"})

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/cocoasterr/go-app/helper"
+	"github.com/cocoasterr/go-app/controllers"
 	models "github.com/cocoasterr/go-app/model"
 	"github.com/cocoasterr/go-app/orm"
 	"github.com/gin-gonic/gin"
@@ -13,15 +13,28 @@ import (
 
 
 func main() {
+	//database/sql connection
 	db := models.ConnectDB()
 
 	defer db.Close()
+	//orm connection
+	orm.ConnectDB()
 	
 	router := gin.Default()
-	orm.ConnectDB()
 
+	//database/sql
+	router.GET("/products", controllers.GetAllProduct)
 
+	//orm
+	router.GET("/productsorm", controllers.OrmGetAllProduct)
 	
+	//test
+	router.GET("/todos/:id", getTodo)
+	router.POST("/todos", createTodo)
+	router.PUT("/todos/:id", updateTodo)
+	router.DELETE("/todos/:id", deleteTodo)
+	
+	// create dummy
 	router.POST("/create100k", func(c *gin.Context) {
 		totalLoops := 40000
 
@@ -33,26 +46,11 @@ func main() {
 			}
 		}
 	})
-
-	router.GET("/products", getAllProduct)
-	router.GET("/productsorm", ormGetAllProduct)
-	router.GET("/todos/:id", getTodo)
-	router.POST("/todos", createTodo)
-	router.PUT("/todos/:id", updateTodo)
-	router.DELETE("/todos/:id", deleteTodo)
-
+	
 	router.Run(":8080")
 }
 
-func getAllProduct(c *gin.Context) {
-	var product models.Product
-	helper.GetAllData(c, product.TableName())
-}
 
-func ormGetAllProduct(c *gin.Context){
-	var product models.Product
-	helper.OrmGetAllData(c, product.TableName())
-}
 
 
 // func getTodos(c *gin.Context) {

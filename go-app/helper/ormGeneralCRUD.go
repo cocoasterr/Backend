@@ -35,7 +35,7 @@ func OrmGetAllData(c *gin.Context, tableName string) {
 	}
 
 	var data []map[string]interface{}
-	if err := orm.DB.Table(tableName).Offset(offset).Limit(limit).Find(&data).Error; err != nil {
+	if err := orm.DB.Table(tableName).Select("id","name").Offset(offset).Limit(limit).Find(&data).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to get data"})
 		return
 	}
