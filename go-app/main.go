@@ -6,7 +6,6 @@ import (
 
 	"github.com/cocoasterr/go-app/controllers"
 	models "github.com/cocoasterr/go-app/model"
-	"github.com/cocoasterr/go-app/orm"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
@@ -18,7 +17,7 @@ func main() {
 
 	defer db.Close()
 	//orm connection
-	orm.ConnectDB()
+	models.OrmConnectDB()
 	
 	router := gin.Default()
 

@@ -3,7 +3,7 @@ package helper
 import (
 	"strconv"
 
-	"github.com/cocoasterr/go-app/orm"
+	models "github.com/cocoasterr/go-app/model"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,13 +29,15 @@ func OrmGetAllData(c *gin.Context, tableName string) {
 	offset := (page - 1) * limit
 
 	var total int64
-	if err := orm.DB.Table(tableName).Count(&total).Error; err != nil {
+	if err := models.DBORM.Table(tableName).Count(&total).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to get data"})
 		return
 	}
 
 	var data []map[string]interface{}
-	if err := orm.DB.Table(tableName).Select("id","name").Offset(offset).Limit(limit).Find(&data).Error; err != nil {
+	//just additional knowledge
+	// if err := models.DBORM.Table(tableName).Select("id","name").Offset(offset).Limit(limit).Find(&data).Error; err != nil {
+	if err := models.DBORM.Table(tableName).Offset(offset).Limit(limit).Find(&data).Error; err != nil {
 		c.JSON(500, gin.H{"error": "Failed to get data"})
 		return
 	}
