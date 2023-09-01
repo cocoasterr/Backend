@@ -1,0 +1,7 @@
+npm install -D tailwindcss
+npm i react-router-dom react-router
+npm i axios
+npm i react-toastify //for notification success login
+
+npm update babel-preset-react-app
+npm install @babel/plugin-proposal-private-property-in-object --save-dev
