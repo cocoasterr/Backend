@@ -103,7 +103,7 @@ func getRes(rows *sql.Rows) ([]interface{} , error){
 
 		itemMap := make(map[string]interface{})
 		for i, colName := range listColumn {
-			itemMap[colName] = *(dest[i].(*interface{}))
+			itemMap[colName] = *dest[i].(*interface{})
 		}
 
 		dataRes = append(dataRes, itemMap)

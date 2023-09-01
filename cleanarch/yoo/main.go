@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/google/uuid"
 )
 
 type Product struct {
@@ -34,4 +36,9 @@ func main() {
 
 	d := product.GetNameField()
 	fmt.Println(d)
+
+    id := uuid.New() // Membuat UUID baru
+    idString := id.String() // Mengonversi UUID menjadi string
+
+    fmt.Println("UUID:", idString)
 }
