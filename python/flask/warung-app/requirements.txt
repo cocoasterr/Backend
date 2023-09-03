@@ -1,0 +1,9 @@
+sqlalchemy
+Flask 
+Flask-PyMongo
+pymongo
+python-dotenv
+passlib
+flask_jwt_extended
+psycopg2-binary
+psycopg2

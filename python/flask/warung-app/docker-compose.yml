@@ -1,0 +1,31 @@
+version: '3'
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      - MONGO_INITDB_DATABASE=warung_app
+      - MONGO_DATABASE_URL=mongodb://mongo:27017/warung_app
+      - SECRET_KEY=ashdkjsahdkjsahdjsahdkjsadjsad
+      - DB_URL_POSTGRES=postgresql+psycopg2://postgres:password@postgres:5432/warung_app
+
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=warung_app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
