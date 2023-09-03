@@ -28,7 +28,6 @@ def login():
             "username": user["username"],
         }
         minutes = int(os.getenv("EXPIRED_TIME_MINUTES", 5))
-        # exp = datetime.now() + timedelta(minutes=minutes)
         exp = timedelta(minutes)
         access_token = create_access_token(identity=res, expires_delta=exp)
         refresh_token = create_refresh_token(identity=res, expires_delta=exp)

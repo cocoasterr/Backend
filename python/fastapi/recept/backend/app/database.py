@@ -4,6 +4,7 @@ from app.config import settings
 from sqlalchemy.ext.declarative import declarative_base
 from fastapi import HTTPException, status
 
+
 class databaseSession:
     def __init__(self):
         self.psql_engine = None
@@ -11,9 +12,11 @@ class databaseSession:
 
     def init(self):
         self.psql_engine = create_engine(settings.DB_CONFIG)
-        self.psql_session = sessionmaker(autocommit=False, autoflush=False, bind=self.psql_engine)
-        print(f'Connected to Postgres')
-    
+        self.psql_session = sessionmaker(
+            autocommit=False, autoflush=False, bind=self.psql_engine
+        )
+        print(f"Connected to Postgres")
+
     async def conn(self):
         try:
             conn = self.psql_engine.connect()
@@ -27,6 +30,7 @@ meta = MetaData()
 
 db = databaseSession()
 
+
 def commit_rollback(session):
     try:
         session.commit()
@@ -34,10 +38,11 @@ def commit_rollback(session):
     except Exception as e:
         session.rollback()
         raise HTTPException(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                detail="Data rollback!")
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Data rollback!"
+        )
 
-def get_db()->Session:
+
+def get_db() -> Session:
     """
     Function to generate db session
     :return: Session

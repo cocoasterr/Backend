@@ -1,9 +1,7 @@
 
-
 from sqlalchemy import Column, String
-
-from app.database import Base
 from sqlalchemy.types import String
+from app.database import Base
 
 
 class Users(Base):
