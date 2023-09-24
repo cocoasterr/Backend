@@ -37,4 +37,4 @@ def bad_request(e):
 if __name__ == "__main__":
     test_conn()
     db.init()
-    flask.run(debug=True)
+    flask.run(debug=False)

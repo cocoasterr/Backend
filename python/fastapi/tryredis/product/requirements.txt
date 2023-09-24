@@ -1,0 +1,9 @@
+fastapi
+fastapi_jwt_auth
+pydantic==1.10.2
+passlib
+uvicorn
+starlette
+pydantic[email]
+psycopg2-binary
+redis-om

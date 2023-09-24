@@ -41,9 +41,3 @@ class UserService(PGService):
         for key,value in zip(find_user._fields, find_user._data):
             user[key] = value
         find_user = self.find_by("id", user["id"])
-        
-        
-    
-        
-    
-

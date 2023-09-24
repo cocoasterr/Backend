@@ -1,0 +1,8 @@
+{
+  "Country Name": "USA",
+  "States": { "Ohio": 52343, "Texas": 44554, "California": 21233 },
+  "Crops": {
+    "Crop 1": ["Maize", "tobacco", "wheat"],
+    "Crop 2": ["Paddy", "Chillies"]
+  }
+}

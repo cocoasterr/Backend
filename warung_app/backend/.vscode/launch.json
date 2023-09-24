@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Run Go Program",
+        "type": "go",
+        "request": "launch",
+        "mode": "auto",
+        "program": "${workspaceFolder}/app/net_http/main.go",
+        "env": {"PG_URL" : "postgresql://postgres:password@172.21.255.76:5439/go_warung_app?sslmode=disable"},
+        "args": ["make", "run"]
+      }
+    ]
+  }
+  

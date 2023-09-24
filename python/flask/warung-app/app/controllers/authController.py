@@ -36,9 +36,14 @@ def register():
         if invalid_email_pass_username:
             raise Bad_Request(invalid_email_pass_username)
 
+        find_user = auth_service.find_by(operator="or", key_value={
+            "email": payload["email"],
+            "username": payload["username"],
+        })
+        if find_user:
+            raise Bad_Request("User Already exist!")
         # hash password
         payload["password"] = auth_service.set_password(payload["password"])
-
         # if request.files["photo"]:
         #     dsa = "dsa"
         user = auth_service.user_serializers(payload)
@@ -71,7 +76,9 @@ def login():
         )
         if invalid_email_pass:
             raise Bad_Request(invalid_email_pass)
-        find_user = auth_service.find_by(key="email", value=payload["email"])
+        find_user = auth_service.find_by("email", payload["email"])
+        if not find_user:
+            raise Bad_Request("user not found!")
         user = {}
         for key,value in zip(find_user._fields, find_user._data):
             user[key] = value
@@ -111,14 +118,15 @@ def get_me():
         user_access = get_jwt_identity()
 
         find_user = auth_service.find_by("id", user_access["id"])
+        if not find_user:
+            raise Bad_Request
         user = auth_service.row_to_dict(find_user)
         
         find_person = person_service.find_by("user_id", user["id"])
-        user.pop("id")
-        user.pop("password")
         person = person_service.row_to_dict(find_person)
         user.update(person)
-        user.pop("user_id")
+        for i in ["id", "password", "user_id"]:
+            user.pop(i)
         return jsonify({"message": "success!", "data": [user]}), 200
     except Bad_Request as e:
         return handle_bad_request(str(e))

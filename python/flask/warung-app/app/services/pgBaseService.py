@@ -23,14 +23,31 @@ class PGService:
     @classmethod
     def create_service_without_token(self, payload):
         try:
-            self.repo.create(**payload)
+            return self.repo.create(**payload)
         except Exception as e:
             return e
 
     @classmethod
-    def find_by(self, key, value):
+    def find_by(self, key:str=None, value:str=None, custom_condition:str=None, operator:str=None, key_value:dict=None):
         try:
-            return self.repo.find_by(key, value)
+            if key and value:
+                if isinstance(value, str):
+                    value = f"'{value}'"
+                condition = f"{key}={value}"
+            elif custom_condition:
+                condition = custom_condition
+            elif operator:
+                res = []
+                for i in key_value.items():
+                    key = i[0]
+                    value = i[1]
+                    if isinstance(value, str):
+                        value = f"'{value}'"
+                    res.append(f"{key}={value}")
+                condition = f" {operator} ".join(res)
+            else:
+                return None
+            return self.repo.find_by(condition)
         except Exception as e:
             raise 
     
